@@ -19,11 +19,18 @@ output "policy" {
 }
 
 output "replica_arns" {
-  description = "The ARNs of the replica secret. Keys are region names, values are ARNs."
-  value = {
+  description = "The ARNs of the replica secrets (also includes the ARN of the secret in the primary region). Keys are region names, values are ARNs."
+  value = merge({
     for replica in var.replica_regions :
     replica.region => "arn:${data.aws_arn.secret.partition}:${data.aws_arn.secret.service}:${replica.region}:${data.aws_arn.secret.account}:${data.aws_arn.secret.resource}"
-  }
+    }, {
+    (data.aws_region.current.name) = aws_cloudformation_stack.secret.outputs.arn
+  })
+}
+
+output "primary_region" {
+  description = "The region that the initial secret was created in and is replicated from."
+  value       = data.aws_region.current.name
 }
 
 // Also output all of the input variables

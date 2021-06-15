@@ -21,8 +21,13 @@ locals {
   }
 }
 
+// Create a random ID to give the stack a unique name
+resource "random_id" "stack_id" {
+  byte_length = 8
+}
+
 resource "aws_cloudformation_stack" "secret" {
-  name = "replicated-secret"
+  name = "replicated-secret-${upper(random_id.stack_id.hex)}"
 
   template_body = jsonencode({
     Resources = {
@@ -51,3 +56,5 @@ data "aws_secretsmanager_secret" "secret" {
 data "aws_arn" "secret" {
   arn = aws_cloudformation_stack.secret.outputs.arn
 }
+
+data "aws_region" "current" {}
