@@ -1,4 +1,8 @@
 # AWS Replicated Secret Module
+
+## ARCHIVED
+This functionality is now natively supported by the [aws_secretsmanager_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) resource (see the `replica` block), so this module is now archived and will have no further changes.
+
 A module that is similar to the aws_secretsmanager_secret resource, but adds support for cross-region replication. It utilizes CloudFormation (via the [aws_cloudformation_stack](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudformation_stack) resource) to create the secret.
 
 This module will become obsolete once [this issue](https://github.com/hashicorp/terraform-provider-aws/issues/17943) in the Terraform AWS provider is resolved.
